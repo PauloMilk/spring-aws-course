@@ -13,12 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paulo.springcourseaws.domain.enums.RequestState;
 
 import lombok.AllArgsConstructor;
@@ -60,6 +60,7 @@ public class Request implements Serializable {
 	@JoinColumn(name = "owner_id", nullable = false)
 	private User owner;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "request")
 	private List<RequestStage> stages = new ArrayList<RequestStage>();
 }
