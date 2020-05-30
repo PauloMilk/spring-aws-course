@@ -1,15 +1,18 @@
 package com.paulo.springcourseaws.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.paulo.springcourseaws.domain.RequestStage;
-import com.paulo.springcourseaws.domain.enums.RequestState;
 import com.paulo.springcourseaws.exception.NotFoundException;
+import com.paulo.springcourseaws.model.PageModel;
+import com.paulo.springcourseaws.model.PageRequestModel;
 import com.paulo.springcourseaws.repository.RequestRepository;
 import com.paulo.springcourseaws.repository.RequestStageRepository;
 
@@ -35,8 +38,10 @@ public class RequestStageService {
 		return updated;
 	}
 	
-	public List<RequestStage> listAllByRequestId(Long id) {
-		List<RequestStage> requestsStages = requestStageRepository.findAllByRequestId(id);
+	public PageModel<RequestStage> listAllByRequestId(Long id, PageRequestModel pageRequestModel) {
+		Pageable pageable = PageRequest.of(pageRequestModel.getPage(), pageRequestModel.getSize());		
+		Page<RequestStage> page= requestStageRepository.findAllByRequestId(id, pageable);
+		PageModel<RequestStage> requestsStages = new PageModel<RequestStage>((int)page.getTotalElements(), page.getSize(), page.getTotalPages(), page.getContent());
 		return requestsStages;
 	}
 	

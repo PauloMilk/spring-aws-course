@@ -1,7 +1,5 @@
 package com.paulo.springcourseaws.resource;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paulo.springcourseaws.domain.Request;
 import com.paulo.springcourseaws.domain.User;
 import com.paulo.springcourseaws.dto.UserLoginDTO;
+import com.paulo.springcourseaws.model.PageModel;
+import com.paulo.springcourseaws.model.PageRequestModel;
 import com.paulo.springcourseaws.service.RequestService;
 import com.paulo.springcourseaws.service.UserService;
 
@@ -49,8 +50,9 @@ public class UserResource {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<User>> getAllUsers() {
-		List<User> users = userService.findAll();
+	public ResponseEntity<PageModel<User>> getAllUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		PageRequestModel pageRequestModel = new PageRequestModel(page,size);
+		PageModel<User> users = userService.findAllPageModel(pageRequestModel);
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 	
@@ -61,8 +63,9 @@ public class UserResource {
 	}
 	
 	@GetMapping("/{id}/requests")
-	public ResponseEntity<List<Request>> login(@PathVariable Long id) {
-		List<Request> requests = requestService.listAllByOwnerId(id);
+	public ResponseEntity<PageModel<Request>> login(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @PathVariable Long id) {
+		PageRequestModel pageRequestModel = new PageRequestModel(page,size);
+		PageModel<Request> requests = requestService.listAllByOwnerId(id, pageRequestModel);
 		return ResponseEntity.status(HttpStatus.OK).body(requests);
 	}
 	
