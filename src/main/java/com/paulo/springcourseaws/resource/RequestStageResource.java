@@ -1,5 +1,7 @@
 package com.paulo.springcourseaws.resource;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paulo.springcourseaws.domain.RequestStage;
+import com.paulo.springcourseaws.dto.RequestStagesSaveDTO;
 import com.paulo.springcourseaws.service.RequestStageService;
 
 @RestController
@@ -21,8 +24,8 @@ public class RequestStageResource {
 	private RequestStageService requestStageService;
 	
 	@PostMapping
-	public ResponseEntity<RequestStage> save(@RequestBody RequestStage requestStage) {
-		RequestStage createdRequestStage = requestStageService.save(requestStage);
+	public ResponseEntity<RequestStage> save(@RequestBody @Valid RequestStagesSaveDTO requestStage) {
+		RequestStage createdRequestStage = requestStageService.save(requestStage.transformToRequestStage());
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdRequestStage);
 	}
 	

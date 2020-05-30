@@ -59,5 +59,9 @@ public class UserService {
 		Optional<User> result = userRepository.findByEmailAndPassword(email, hash);
 		return result.get();
 	}
+	
+	public int updateRole(User user) {
+		return userRepository.updateRole(user.getId(), user.getRole());		
+	}
 
 }

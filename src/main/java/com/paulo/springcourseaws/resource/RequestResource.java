@@ -1,5 +1,7 @@
 package com.paulo.springcourseaws.resource;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.paulo.springcourseaws.domain.Request;
 import com.paulo.springcourseaws.domain.RequestStage;
+import com.paulo.springcourseaws.dto.RequestSaveDTO;
+import com.paulo.springcourseaws.dto.RequestUpdateDTO;
 import com.paulo.springcourseaws.model.PageModel;
 import com.paulo.springcourseaws.model.PageRequestModel;
 import com.paulo.springcourseaws.service.RequestService;
@@ -30,15 +34,17 @@ public class RequestResource {
 	private RequestStageService requestStageService;
 	
 	@PostMapping
-	public ResponseEntity<Request> save(@RequestBody Request request) {
-		Request createdRequest = requestService.save(request);
-		return ResponseEntity.status(HttpStatus.CREATED).body(request);
+	public ResponseEntity<Request> save(@RequestBody @Valid RequestSaveDTO dto) {
+		Request createdRequest = dto.transformToRequest();
+		createdRequest = requestService.save(createdRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody Request request) {
-		request.setId(id);
-		Request updatedRequest = requestService.update(request);
+	public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO dto) {
+		Request updatedRequest = dto.transformToRequest();
+		updatedRequest.setId(id);
+		updatedRequest = requestService.update(updatedRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(updatedRequest);	
 	}
 	
