@@ -40,10 +40,10 @@ public class SpringCourseAwsApplication extends SpringBootServletInitializer imp
 		}
 
 		
-		user = this.userRepository.findByEmail("usuario@gmail.com").orElse(new User());
-		if(user.getEmail() == null) {
-			user = new User(null, "usuario", "usuario4@gmail.com", encoder.encode("123"), Role.SIMPLE, null, null);
-			userRepository.save(user);
+		User user2 = this.userRepository.findByEmail("usuario@gmail.com").orElse(new User());
+		if(user2.getEmail() == null) {
+			user2 = new User(null, "usuario", "usuario@gmail.com", encoder.encode("123"), Role.SIMPLE, null, null);
+			userRepository.save(user2);
 		}
 		
 		

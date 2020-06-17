@@ -71,7 +71,7 @@ public class UserResource {
 		User updatedUser = user.transformToUser();
 		updatedUser.setId(id);
 		updatedUser = userService.update(updatedUser);
-		return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+		return ResponseEntity.ok(updatedUser);
 	}
 
 
